@@ -9,9 +9,9 @@ env:
 jobs:
   test:
     env:
-      MOGODB_CLUSTER_ADDRESS: cluster0.w2jdbds.mongodb.net
+      MONGODB_CLUSTER_ADDRESS: cluster0.w2jdbds.mongodb.net
       MONGODB_USERNAME: lucasver
-      MONGODG_PASSWORD: t2JwA7uztjbdHDFG
+      MONGODB_PASSWORD: t2JwA7uztjbdHDFG
       MONGODB_PORT: 8080
     environment: testing
     runs-on: ubuntu-latest
@@ -26,12 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run server
-        run: npm start & npx wait-on http://127.0.0.1:$PORT
+        run: npm start & npx wait-on http://127.0.0.1:${{ env.MONGODB_PORT }}
       - name: Run tests
         run: npm test
       - name: Output information
         run: |
          echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
+         echo "MONGODB_CLUSTER_ADDRESS: ${{ env.MONGODB_CLUSTER_ADDRESS }}"
   deploy:
     needs: test
     runs-on: ubuntu-latest
